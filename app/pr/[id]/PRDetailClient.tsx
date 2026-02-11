@@ -6,7 +6,7 @@ import Link from 'next/link';
 import AddCommentButton from '@/app/components/AddCommentButton';
 import CoverageIndicator from '@/app/components/CoverageIndicator';
 
-const basePath = process.env.NODE_ENV === 'production' ? '/code-review-persistent' : '';
+const basePath = process.env.NODE_ENV === 'production' ? '/turbo-garbanzo' : '';
 
 export default function PRDetailClient() {
   const params = useParams();

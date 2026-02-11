@@ -1,6 +1,6 @@
 import Link from 'next/link';
 
-const basePath = process.env.NODE_ENV === 'production' ? '/code-review-persistent' : '';
+const basePath = process.env.NODE_ENV === 'production' ? '/turbo-garbanzo' : '';
 
 export default function PullRequestsPage() {
   return (
