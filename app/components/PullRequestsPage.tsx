@@ -1,6 +1,6 @@
 import Link from 'next/link';
 
-const basePath = process.env.NODE_ENV === 'production' ? '/code-review-prototype' : '';
+const basePath = process.env.NODE_ENV === 'production' ? '/code-review-persistent' : '';
 
 export default function PullRequestsPage() {
   return (

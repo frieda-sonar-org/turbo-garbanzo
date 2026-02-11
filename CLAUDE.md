@@ -13,13 +13,16 @@ This is a variant prototype exploring persistent data and real integrations. Bas
 ## Project Structure
 
 ```
-code-review-fab/
+code-review-persistent/
 ├── app/
 │   ├── components/
-│   │   └── PullRequestsPage.tsx    # Main Pull Requests page component
+│   │   ├── PullRequestsPage.tsx    # Main Pull Requests page component
+│   │   ├── AddCommentButton.tsx    # Inline comment button component
+│   │   └── CoverageIndicator.tsx   # Coverage percentage indicator
 │   ├── pr/
 │   │   └── [id]/
-│   │       └── page.tsx            # PR detail page (client component)
+│   │       ├── page.tsx            # PR detail page wrapper
+│   │       └── PRDetailClient.tsx  # PR detail client component (main logic)
 │   ├── design-system.css           # Color palette and design tokens
 │   ├── echoes-tokens-base.css      # Echoes design system base tokens
 │   ├── echoes-tokens-dark.css      # Echoes design system dark theme
@@ -33,6 +36,7 @@ code-review-fab/
 │   └── *.svg                       # Various UI icons
 ├── next.config.ts                  # Next.js configuration
 ├── package.json
+├── CLAUDE.md                       # Project documentation (this file)
 └── README.md
 ```
 
@@ -202,16 +206,19 @@ Location: `app/components/PullRequestsPage.tsx`
    - Checkmark icon
 
 ### PR Detail Page Component
-Location: `app/pr/[id]/page.tsx`
+Location: `app/pr/[id]/PRDetailClient.tsx`
 
 **Client Component** (`'use client'`)
 
 **State Management**:
-- `showGroupFiles`: Toggle file list visibility
-- `showFileChanges`: Toggle file changes section
+- `showGroupFiles1-4`: Toggle file list visibility for each group
+- `showFileChanges1-3`: Toggle file changes section visibility
 - `showReviewModal`: Control review dropdown visibility
 - `reviewType`: Selected review type (comment/request changes/approve)
 - `reviewComment`: Review comment text
+- `showAuthorNote`: Control Author's Note panel visibility (default: true)
+- `isClosingAuthorNote`: Track closing animation state
+- `authorNoteTab`: Active tab in Author's Note ('context' or 'conversation')
 
 **Sections**:
 1. **Top Navigation & Sidebar** (same as homepage)
@@ -221,7 +228,8 @@ Location: `app/pr/[id]/page.tsx`
    - Title with version hashtag
    - Action buttons:
      - "Review changes" button (primary button with dropdown)
-     - "View on GitHub" button (secondary with GitHub icon)
+     - "Author's Note" button (ghost/secondary style)
+     - "View on GitHub" button (ghost/secondary with GitHub icon)
      - "Star" button (icon-only secondary)
 
 3. **Review Modal**
@@ -231,17 +239,32 @@ Location: `app/pr/[id]/page.tsx`
 
 4. **Files View**
    - Groups sidebar (left, sticky positioning at top: 152px):
-     - Shows file groupings
+     - Shows 4 file groupings:
+       - Group 1: Backend API Endpoints (4 files)
+       - Group 2: Database & Models (3 files)
+       - Group 3: Authentication & Security (3 files)
+       - Group 4: Testing & Documentation (3 files)
      - Group names and file counts
      - Scrollable with max-height constraint
    - File changes (right):
-     - File metadata cards
+     - 4 file change cards matching the groups
+     - File metadata cards with statistics
      - Code diff tables with:
        - Line numbers
        - Add/remove indicators
        - Syntax-highlighted code
        - Inline comment buttons (on hover)
-     - "Mark as reviewed" button per file (primary button style)
+     - "Mark as reviewed" button per group (primary button style)
+
+5. **Author's Note Panel** (slide-in from right, open by default)
+   - Slide-in/slide-out animations (300ms)
+   - Two tabs: Context and Conversations
+   - Context tab contains:
+     - PR description and key changes
+     - PR Progress section (with card backgrounds on stats)
+     - Ask AI about this PR search input
+   - Conversations tab contains:
+     - Discussion thread comments (no card backgrounds)
 
 ## Styling Architecture
 
@@ -301,10 +324,17 @@ We removed the Context tab (Description + Discussion) to focus solely on **code 
 ### Completed Features
 - ✅ Click-through functionality for PR items
 - ✅ PR detail page with Files view
-- ✅ Code diff viewer with syntax highlighting
-- ✅ Collapsible file sections
+- ✅ Code diff viewer with syntax highlighting (TypeScript)
+- ✅ Collapsible file sections and groups
 - ✅ Review modal with multiple review types
 - ✅ Client-side navigation
+- ✅ Author's Note panel with slide-in/slide-out animations
+- ✅ PR Progress tracking with visual stats and progress bar
+- ✅ Ask AI search functionality (UI only)
+- ✅ Conversation thread display
+- ✅ 4-group file organization matching code-review-fab structure
+- ✅ Sticky page header and groups sidebar
+- ✅ Ghost/secondary button styling for supporting actions
 
 ### Planned Features
 - [ ] Additional pages (Summary, Issues, Dashboard, etc.)
@@ -335,10 +365,44 @@ We removed the Context tab (Description + Discussion) to focus solely on **code 
 ### Recent Changes
 
 - **February 11, 2026**:
+  - **Author's Note Panel Implementation**:
+    - Added slide-in panel from right side (500px width, max-width: 90vw)
+    - Panel opens by default on PR detail page load
+    - Smooth slide-out animation (300ms) when closing
+    - Added "Author's Note" button in page header (ghost/secondary style)
+    - Panel includes overlay with fade-in/fade-out animations
+    - Two tabs: Context and Conversations
+    - Context tab features:
+      - PR description and key changes
+      - PR Progress section with stats (Files Reviewed, Groups Completed, Est. Time Left)
+      - Progress bar with gradient fill
+      - "Ask AI about this PR" search input (only in Context tab)
+    - Conversations tab features:
+      - Discussion thread with comment cards
+      - Comment avatars with gradient backgrounds
+      - Clean, minimal styling without card backgrounds
+
+  - **PR Content Update - Matching code-review-fab**:
+    - Updated file groups from 3 to 4 groups
+    - Group 1: Backend API Endpoints (4 files: users.ts, auth.ts, userController.ts, validation.ts)
+    - Group 2: Database & Models (3 files: User.ts, Session.ts, migration SQL)
+    - Group 3: Authentication & Security (3 files: authService.ts, jwt.ts, authMiddleware.ts)
+    - Group 4: Testing & Documentation (3 files: users.test.ts, README.md, API.md) - displayed as reviewed/collapsed
+    - Updated file change cards to match new group structure with proper descriptions
+    - Updated code samples to show TypeScript instead of YAML
+
+  - **Styling Refinements**:
+    - Changed "Author's Note" button to ghost style (transparent background with border)
+    - Removed card backgrounds from reviewer note sections for cleaner look
+    - Removed card backgrounds from conversation comments
+    - Added card backgrounds to individual PR progress stat items
+    - Improved AI search input styling with focus states
+    - Added proper spacing and typography hierarchy throughout Author's Note panel
+
   - **UI Enhancement - Page Header Actions**:
     - Added "View on GitHub" button with GitHub icon and tooltip ("This project is bound to GitHub")
     - Added "Star" icon button with tooltip ("Add this project to favorites")
-    - Reordered action buttons: "Review changes" (leftmost), "View on GitHub", "Star"
+    - Reordered action buttons: "Review changes", "Author's Note", "View on GitHub", "Star"
     - Changed review modal placeholder text from "Write your review" to "Add a comment"
 
   - **Design System Update - Primary Button Color Scheme**:
@@ -365,15 +429,17 @@ We removed the Context tab (Description + Discussion) to focus solely on **code 
       - `var(--color-btn-primary-bg)` for background
       - `var(--color-btn-primary-text)` for text color
       - `var(--color-btn-primary-hover)` for hover state
-    - Secondary buttons (View on GitHub, Star) use transparent background with border
+    - Secondary/ghost buttons (Author's Note, View on GitHub, Star) use transparent background with border
 
   - **Component Styling**:
+    - Added `.btn-author-note` styles (ghost/secondary button)
     - Added `.btn-view-github` styles (secondary button with GitHub icon)
     - Added `.btn-star` styles (icon-only secondary button)
     - Updated `.btn-review-changes` to use design system variables
     - Updated `.btn-review-submit` to use design system variables
     - Updated `.mark-reviewed-button` to use design system variables
     - Updated `.review-option-radio.selected` to use primary button colors
+    - Added comprehensive Author's Note panel styles with animations
 
 - **February 10, 2026**:
   - **UI Simplification**: Removed Context tab from PR detail page
@@ -400,6 +466,6 @@ We removed the Context tab (Description + Discussion) to focus solely on **code 
 
 ---
 
-**Last Updated**: February 11, 2026
+**Last Updated**: February 11, 2026 (Evening Session)
 **Created by**: Claude Code Session
 **Status**: Active POC Development - Ready for Real Implementation
