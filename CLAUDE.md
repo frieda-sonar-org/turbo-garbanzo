@@ -169,6 +169,72 @@ npm run lint
 rm -rf .next out
 ```
 
+## GitHub Pages Deployment
+
+### Live Site
+**URL**: https://frieda-sonar-org.github.io/turbo-garbanzo/
+**Repository**: frieda-sonar-org/turbo-garbanzo
+
+### Deployment Configuration
+The project is configured for static export to GitHub Pages:
+- **basePath**: `/turbo-garbanzo` (matches GitHub repository name)
+- **assetPrefix**: `/turbo-garbanzo`
+- **output**: `export` (static site generation)
+
+### GitHub Actions Workflow
+Location: `.github/workflows/deploy.yml`
+
+**IMPORTANT**: The workflow has been configured to handle corporate npm registry issues:
+
+```yaml
+- name: Setup Node
+  uses: actions/setup-node@v4
+  with:
+    node-version: '20'
+    # NOTE: npm cache is intentionally DISABLED to prevent caching JFrog auth
+
+- name: Install dependencies
+  run: |
+    rm -f package-lock.json .npmrc
+    npm install --registry=https://registry.npmjs.org/
+```
+
+### Troubleshooting: npm Authentication Errors
+
+**Problem**: GitHub Actions fails with `npm error code E401 - Incorrect or missing password`
+
+**Root Cause**:
+- Local development uses corporate JFrog Artifactory registry (configured in `~/.npmrc`)
+- When `package-lock.json` is generated locally, it contains JFrog registry URLs for all packages
+- `npm ci` uses exact URLs from `package-lock.json`, causing authentication failures in GitHub Actions
+- npm cache in GitHub Actions can persist old authentication state
+
+**Solution Applied**:
+1. **Remove npm cache**: The `cache: 'npm'` option is removed from `setup-node` step to prevent caching authentication state
+2. **Delete lockfile before install**: `package-lock.json` and `.npmrc` are deleted in CI before install
+3. **Force public registry**: Use `--registry=https://registry.npmjs.org/` flag to bypass JFrog URLs
+
+**DO NOT**:
+- ❌ Add `cache: 'npm'` back to the workflow
+- ❌ Use `npm ci` (it will use exact URLs from package-lock.json)
+- ❌ Try to fix package-lock.json manually (it has 300+ package URLs)
+
+**Alternative Solutions** (not implemented):
+- Regenerate `package-lock.json` from a clean environment without JFrog registry
+- Use a separate `.npmrc` for CI that overrides all registry settings
+- Set up GitHub Actions secrets with JFrog credentials (not recommended)
+
+### Manual Deployment
+To manually trigger deployment:
+```bash
+git push origin main
+```
+
+The GitHub Actions workflow will automatically:
+1. Install dependencies from public npm registry
+2. Build Next.js static export
+3. Deploy to GitHub Pages
+
 ## Component Details
 
 ### PullRequestsPage Component
