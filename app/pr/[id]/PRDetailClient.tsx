@@ -49,6 +49,7 @@ export default function PRDetailClient() {
 
   // Author's Note panel state
   const [showAuthorNote, setShowAuthorNote] = useState(false);
+  const [isClosingAuthorNote, setIsClosingAuthorNote] = useState(false);
   const [authorNoteTab, setAuthorNoteTab] = useState('context'); // 'context' or 'conversation'
   const [aiQuestion, setAiQuestion] = useState('');
 
