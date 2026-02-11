@@ -72,6 +72,15 @@ export default function PRDetailClient() {
     setNewCommentText('');
   };
 
+  // Handle Author's Note close with animation
+  const handleCloseAuthorNote = () => {
+    setIsClosingAuthorNote(true);
+    setTimeout(() => {
+      setShowAuthorNote(false);
+      setIsClosingAuthorNote(false);
+    }, 300); // Match animation duration
+  };
+
   // Click outside handler to cancel comment input
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -137,12 +146,12 @@ export default function PRDetailClient() {
   const prData = {
     id: params.id,
     number: 35,
-    title: 'SC-37654 Fix Mise',
+    title: 'Add user management API with authentication & session handling',
     version: 2,
-    description: 'This pull request addresses the critical issue found in the Mise configuration handler. The changes include refactoring the error handling logic, improving validation for configuration parameters, and adding comprehensive unit tests to ensure stability. Additional updates were made to the documentation to reflect the new behavior.',
+    description: 'This pull request introduces a comprehensive user management system with REST API endpoints, JWT-based authentication, and database session handling. The implementation includes 4 main components: Backend API routes (users & auth), Database models & migrations, Authentication services with JWT utilities, and comprehensive test coverage with updated documentation.',
     status: 'passed',
     author: 'sonarqubecloud',
-    timestamp: '51 minutes ago'
+    timestamp: '2 hours ago'
   };
 
   return (
@@ -411,7 +420,10 @@ export default function PRDetailClient() {
                 </button>
 
                 {/* Author's Note Button */}
-                <button className="btn-author-note" onClick={() => setShowAuthorNote(true)}>
+                <button className="btn-author-note" onClick={() => {
+                  setShowAuthorNote(true);
+                  setIsClosingAuthorNote(false);
+                }}>
                   <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" style={{ marginRight: '6px' }}>
                     <circle cx="12" cy="12" r="10"/>
                     <line x1="12" y1="16" x2="12" y2="12"/>
@@ -573,7 +585,12 @@ export default function PRDetailClient() {
                           cursor: 'pointer',
                           color: groupReviewed1 ? '#4CAF50' : 'inherit'
                         }}
-                        onClick={() => setShowGroupFiles(!showGroupFiles)}
+                        onClick={() => {
+                          const element = document.getElementById('group-backend-api');
+                          if (element) {
+                            element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                          }
+                        }}
                       >
                         Backend API Endpoints
                       </div>
@@ -664,7 +681,12 @@ export default function PRDetailClient() {
                           cursor: 'pointer',
                           color: groupReviewed2 ? '#4CAF50' : 'inherit'
                         }}
-                        onClick={() => setShowGroupFiles2(!showGroupFiles2)}
+                        onClick={() => {
+                          const element = document.getElementById('group-database');
+                          if (element) {
+                            element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                          }
+                        }}
                       >
                         Database & Models
                       </div>
@@ -745,7 +767,12 @@ export default function PRDetailClient() {
                           cursor: 'pointer',
                           color: groupReviewed3 ? '#4CAF50' : 'inherit'
                         }}
-                        onClick={() => setShowGroupFiles3(!showGroupFiles3)}
+                        onClick={() => {
+                          const element = document.getElementById('group-auth');
+                          if (element) {
+                            element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                          }
+                        }}
                       >
                         Authentication & Security
                       </div>
@@ -803,20 +830,106 @@ export default function PRDetailClient() {
                     </button>
                   </div>
                 </div>
+
+                {/* Group 4: Testing & Documentation */}
+                <div className="file-group">
+                  <div style={{ display: 'flex', alignItems: 'flex-start', width: '100%' }}>
+                    {groupReviewed4 ? (
+                      <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" style={{ marginRight: '8px', marginTop: '2px', flexShrink: 0, color: '#4CAF50' }}>
+                        <circle cx="8" cy="8" r="7" stroke="currentColor" strokeWidth="1.5" fill="none"/>
+                        <path d="M5 8l2 2 4-4" stroke="currentColor" strokeWidth="2" fill="none"/>
+                      </svg>
+                    ) : (
+                      <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" style={{ marginRight: '8px', marginTop: '2px', flexShrink: 0, color: 'var(--color-text-muted)' }}>
+                        <path d="M2 3h5l2 2h5v8H2V3z" stroke="currentColor" strokeWidth="1" fill="none"/>
+                      </svg>
+                    )}
+                    <div style={{ flex: 1, overflow: 'hidden' }}>
+                      <div
+                        className="file-group-name"
+                        style={{
+                          fontWeight: 500,
+                          marginBottom: showGroupFiles4 ? '8px' : '0',
+                          cursor: 'pointer',
+                          color: groupReviewed4 ? '#4CAF50' : 'inherit'
+                        }}
+                        onClick={() => {
+                          const element = document.getElementById('group-backend-api');
+                          if (element) {
+                            element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                          }
+                        }}
+                      >
+                        Testing & Documentation
+                      </div>
+                      {showGroupFiles4 && (
+                        <div style={{ fontSize: '12px', color: 'var(--color-text-muted)', paddingLeft: '8px' }}>
+                          <div style={{
+                            marginBottom: '4px',
+                            overflow: 'hidden',
+                            textOverflow: 'ellipsis',
+                            whiteSpace: 'nowrap',
+                            direction: 'rtl',
+                            textAlign: 'left'
+                          }}>
+                            tests/api/users.test.ts
+                          </div>
+                          <div style={{
+                            marginBottom: '4px',
+                            overflow: 'hidden',
+                            textOverflow: 'ellipsis',
+                            whiteSpace: 'nowrap',
+                            direction: 'rtl',
+                            textAlign: 'left'
+                          }}>
+                            README.md
+                          </div>
+                          <div style={{
+                            overflow: 'hidden',
+                            textOverflow: 'ellipsis',
+                            whiteSpace: 'nowrap',
+                            direction: 'rtl',
+                            textAlign: 'left'
+                          }}>
+                            docs/API.md
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                    <button
+                      className="file-group-toggle"
+                      onClick={() => setShowGroupFiles4(!showGroupFiles4)}
+                      style={{ marginLeft: '8px', flexShrink: 0, marginTop: '2px' }}
+                    >
+                      <svg
+                        width="16"
+                        height="16"
+                        viewBox="0 0 16 16"
+                        fill="currentColor"
+                        style={{
+                          transform: showGroupFiles4 ? 'rotate(0deg)' : 'rotate(-90deg)',
+                          transition: 'transform 0.2s'
+                        }}
+                      >
+                        <path d="M4 6l4 4 4-4" stroke="currentColor" strokeWidth="2" fill="none"/>
+                      </svg>
+                    </button>
+                  </div>
+                </div>
               </div>
 
               {/* Right content - File changes */}
               <div className="files-content">
-                {/* File Change Card */}
-                <div className="file-change-card">
+                {/* First File Change Card - Backend API Endpoints */}
+                <div className="file-change-card" id="group-backend-api">
                   <div className="file-change-header" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '12px', flex: 1 }}>
-                      <h3 style={{ margin: 0 }}>CI/CD Workflow Refactoring with NPM Setup</h3>
+                      <h3 style={{ margin: 0 }}>Backend API Endpoints</h3>
                       <span className="needs-review-badge">Needs review</span>
                       <div className="file-change-meta" style={{ display: 'flex', alignItems: 'center', gap: '8px', marginLeft: 'auto' }}>
-                        <span className="file-count">3 files</span>
-                        <span className="additions">+25</span>
-                        <span className="deletions">-9</span>
+                        <span className="file-count">4 files</span>
+                        <span className="additions">+487</span>
+                        <span className="deletions">-23</span>
                       </div>
                     </div>
                     <button
@@ -842,8 +955,8 @@ export default function PRDetailClient() {
                   {showFileChanges && (
                     <>
                       <div className="file-change-description">
-                        <p>Refactored GitHub Actions workflows by extracting npm setup logic into a reusable composite action and integrating it into existing workflows.</p>
-                        <p className="review-focus"><strong>Review Focus:</strong> Review the new composite action for proper node/npm configuration, caching strategy, and dependencies. Verify the workflow changes correctly reference the new action and that removed setup steps are adequately replaced.</p>
+                        <p>Implemented comprehensive user management REST API with CRUD operations, authentication endpoints, and request validation middleware.</p>
+                        <p className="review-focus"><strong>Review Focus:</strong> Review the API route structure, controller logic for proper error handling, validation middleware rules, and ensure security best practices are followed for user data handling.</p>
                       </div>
 
                       {/* Code Diff */}
@@ -862,7 +975,7 @@ export default function PRDetailClient() {
                         >
                           <path d="M4 6l4 4 4-4" stroke="currentColor" strokeWidth="2" fill="none"/>
                         </svg>
-                        <span className="code-file-path">github/actions/npm-setup/action.yml</span>
+                        <span className="code-file-path">src/api/routes/users.ts</span>
                         <button className="copy-button">
                           <svg width="14" height="14" viewBox="0 0 14 14" fill="currentColor">
                             <rect x="2" y="2" width="8" height="8" stroke="currentColor" strokeWidth="1.5" fill="none"/>
@@ -871,15 +984,15 @@ export default function PRDetailClient() {
                         </button>
                       </div>
                       <div className="code-diff-stats">
-                        <span className="additions">+22</span>
+                        <span className="additions">+215</span>
                         <span className="deletions">-0</span>
                         <span className="separator">•</span>
                         <span className="coverage-badge">
-                          <CoverageIndicator percentage={86.7} size={14} />
-                          Coverage: 86.7%
+                          <CoverageIndicator percentage={92.8} size={14} />
+                          Coverage: 92.8%
                         </span>
                         <span className="separator">•</span>
-                        <span className="duplication">Duplications: 0.0%</span>
+                        <span className="duplication">Duplications: 1.2%</span>
                         <span className="separator">•</span>
                         <span className="issues">Issues: 0</span>
                         <button
@@ -909,7 +1022,7 @@ export default function PRDetailClient() {
                             </td>
                             <td className="line-sign">+</td>
                             <td className="line-content">
-                              <span className="code-keyword">name:</span> NPM Setup
+                              <span className="code-keyword">import</span> {'{ Router }'} <span className="code-keyword">from</span> <span className="code-string">'express'</span>;
                             </td>
                           </tr>
                           {renderNewCommentInput('file1-line1')}
@@ -920,7 +1033,7 @@ export default function PRDetailClient() {
                             </td>
                             <td className="line-sign">+</td>
                             <td className="line-content">
-                              <span className="code-keyword">description:</span> Action to configure NPM registry with Artifactory token from Vault
+                              <span className="code-keyword">import</span> * <span className="code-keyword">as</span> userController <span className="code-keyword">from</span> <span className="code-string">'../controllers/userController'</span>;
                             </td>
                           </tr>
                           {renderNewCommentInput('file1-line2')}
@@ -930,7 +1043,9 @@ export default function PRDetailClient() {
                               <AddCommentButton />
                             </td>
                             <td className="line-sign">+</td>
-                            <td className="line-content"></td>
+                            <td className="line-content">
+                              <span className="code-keyword">import</span> {'{ authMiddleware }'} <span className="code-keyword">from</span> <span className="code-string">'../../middleware/authMiddleware'</span>;
+                            </td>
                           </tr>
                           {renderNewCommentInput('file1-line3')}
                           <tr className="code-line added has-comment">
@@ -940,7 +1055,7 @@ export default function PRDetailClient() {
                             </td>
                             <td className="line-sign">+</td>
                             <td className="line-content">
-                              <span className="code-keyword">runs:</span>
+                              <span className="code-keyword">import</span> {'{ validateUser }'} <span className="code-keyword">from</span> <span className="code-string">'../middleware/validation'</span>;
                             </td>
                           </tr>
                           {renderNewCommentInput('file1-line4')}
@@ -957,7 +1072,7 @@ export default function PRDetailClient() {
                                       <span className="inline-comment-date">22/12/2025, 03:30</span>
                                     </div>
                                     <p className="inline-comment-text">
-                                      This line probably only makes sense if it goes to line 55
+                                      Good use of validation middleware! Make sure to add rate limiting for production.
                                     </p>
                                     <div className="inline-comment-actions">
                                       <button className="inline-comment-action">Reply</button>
@@ -974,9 +1089,7 @@ export default function PRDetailClient() {
                               <AddCommentButton />
                             </td>
                             <td className="line-sign">+</td>
-                            <td className="line-content">
-                              <span className="code-indent">  </span><span className="code-keyword">using:</span> <span className="code-string">"composite"</span>
-                            </td>
+                            <td className="line-content"></td>
                           </tr>
                           {renderNewCommentInput('file1-line5')}
                           <tr className="code-line added">
@@ -986,7 +1099,7 @@ export default function PRDetailClient() {
                             </td>
                             <td className="line-sign">+</td>
                             <td className="line-content">
-                              <span className="code-indent">  </span><span className="code-keyword">steps:</span>
+                              <span className="code-keyword">const</span> router = Router();
                             </td>
                           </tr>
                           {renderNewCommentInput('file1-line6')}
@@ -996,11 +1109,42 @@ export default function PRDetailClient() {
                               <AddCommentButton />
                             </td>
                             <td className="line-sign">+</td>
-                            <td className="line-content">
-                              <span className="code-indent">    </span>- <span className="code-keyword">name:</span> Get vault secrets
-                            </td>
+                            <td className="line-content"></td>
                           </tr>
                           {renderNewCommentInput('file1-line7')}
+                          <tr className="code-line added">
+                            <td className="line-number" onClick={() => handleLineClick('file1-line8')}>8</td>
+                            <td className="line-comment-toggle" onClick={() => handleLineClick('file1-line8')}>
+                              <AddCommentButton />
+                            </td>
+                            <td className="line-sign">+</td>
+                            <td className="line-content">
+                              <span className="code-comment">// User CRUD routes</span>
+                            </td>
+                          </tr>
+                          {renderNewCommentInput('file1-line8')}
+                          <tr className="code-line added">
+                            <td className="line-number" onClick={() => handleLineClick('file1-line9')}>9</td>
+                            <td className="line-comment-toggle" onClick={() => handleLineClick('file1-line9')}>
+                              <AddCommentButton />
+                            </td>
+                            <td className="line-sign">+</td>
+                            <td className="line-content">
+                              router.get(<span className="code-string">'/users'</span>, authMiddleware, userController.getAllUsers);
+                            </td>
+                          </tr>
+                          {renderNewCommentInput('file1-line9')}
+                          <tr className="code-line added">
+                            <td className="line-number" onClick={() => handleLineClick('file1-line10')}>10</td>
+                            <td className="line-comment-toggle" onClick={() => handleLineClick('file1-line10')}>
+                              <AddCommentButton />
+                            </td>
+                            <td className="line-sign">+</td>
+                            <td className="line-content">
+                              router.post(<span className="code-string">'/users'</span>, authMiddleware, validateUser, userController.createUser);
+                            </td>
+                          </tr>
+                          {renderNewCommentInput('file1-line10')}
                         </tbody>
                       </table>
                     </div>
@@ -1354,16 +1498,16 @@ export default function PRDetailClient() {
                   )}
                 </div>
 
-                {/* Second File Change Card - API Authentication Updates */}
-                <div className="file-change-card">
+                {/* Second File Change Card - Database & Models */}
+                <div className="file-change-card" id="group-database">
                   <div className="file-change-header" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '12px', flex: 1 }}>
-                      <h3 style={{ margin: 0 }}>API Authentication & Security Enhancements</h3>
+                      <h3 style={{ margin: 0 }}>Database & Models</h3>
                       <span className="needs-review-badge">Needs review</span>
                       <div className="file-change-meta" style={{ display: 'flex', alignItems: 'center', gap: '8px', marginLeft: 'auto' }}>
-                        <span className="file-count">2 files</span>
-                        <span className="additions">+47</span>
-                        <span className="deletions">-12</span>
+                        <span className="file-count">3 files</span>
+                        <span className="additions">+156</span>
+                        <span className="deletions">-8</span>
                       </div>
                     </div>
                     <button
@@ -1389,8 +1533,8 @@ export default function PRDetailClient() {
                   {showFileChanges2 && (
                     <>
                       <div className="file-change-description">
-                        <p>Enhanced API authentication with JWT token refresh mechanism and improved error handling for expired tokens.</p>
-                        <p className="review-focus"><strong>Review Focus:</strong> Verify the token refresh logic handles edge cases properly, check that error messages don't leak sensitive information, and ensure the new middleware is correctly integrated.</p>
+                        <p>Created data models for User and Session entities, along with database migration for session storage table.</p>
+                        <p className="review-focus"><strong>Review Focus:</strong> Verify model relationships and constraints, check migration includes proper indexes, ensure session table schema supports token refresh flow, and validate data types are appropriate.</p>
                       </div>
 
                       {/* Code Diff 1 */}
@@ -1713,16 +1857,16 @@ export default function PRDetailClient() {
                   )}
                 </div>
 
-                {/* Third File Change Card - Database Migration Scripts */}
-                <div className="file-change-card">
+                {/* Third File Change Card - Authentication & Security */}
+                <div className="file-change-card" id="group-auth">
                   <div className="file-change-header" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '12px', flex: 1 }}>
-                      <h3 style={{ margin: 0 }}>Database Schema Migration - User Preferences</h3>
+                      <h3 style={{ margin: 0 }}>Authentication & Security</h3>
                       <span className="needs-review-badge">Needs review</span>
                       <div className="file-change-meta" style={{ display: 'flex', alignItems: 'center', gap: '8px', marginLeft: 'auto' }}>
-                        <span className="file-count">1 file</span>
-                        <span className="additions">+28</span>
-                        <span className="deletions">-0</span>
+                        <span className="file-count">3 files</span>
+                        <span className="additions">+243</span>
+                        <span className="deletions">-15</span>
                       </div>
                     </div>
                     <button
@@ -1748,8 +1892,8 @@ export default function PRDetailClient() {
                   {showFileChanges3 && (
                     <>
                       <div className="file-change-description">
-                        <p>Added new database migration to create user_preferences table for storing theme, language, and notification settings.</p>
-                        <p className="review-focus"><strong>Review Focus:</strong> Verify the migration script includes proper indexes for frequently queried columns, check foreign key constraints are correctly defined, and ensure the rollback script is complete.</p>
+                        <p>Implemented JWT-based authentication services, token utilities, and authentication middleware for securing API endpoints.</p>
+                        <p className="review-focus"><strong>Review Focus:</strong> Verify JWT token generation/validation logic, check token expiration handling, review middleware authentication flow, and ensure secure password hashing implementation.</p>
                       </div>
 
                       {/* Code Diff */}
@@ -1957,6 +2101,44 @@ export default function PRDetailClient() {
                     </>
                   )}
                 </div>
+
+                {/* Fourth File Change Card - Testing & Documentation */}
+                <div className="file-change-card">
+                  <div className="file-change-header" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '12px', flex: 1 }}>
+                      <h3 style={{ margin: 0 }}>Testing & Documentation</h3>
+                      <span className="reviewed-badge" style={{ backgroundColor: '#4CAF50', color: 'white', padding: '4px 8px', borderRadius: '4px', fontSize: '12px', fontWeight: 500 }}>Reviewed</span>
+                      <div className="file-change-meta" style={{ display: 'flex', alignItems: 'center', gap: '8px', marginLeft: 'auto' }}>
+                        <span className="file-count">3 files</span>
+                        <span className="additions">+312</span>
+                        <span className="deletions">-5</span>
+                      </div>
+                    </div>
+                    <button
+                      className="pin-button"
+                      onClick={() => setShowFileChanges(!showFileChanges)}
+                      style={{ marginLeft: '12px', display: 'none' }}
+                    >
+                      <svg
+                        width="16"
+                        height="16"
+                        viewBox="0 0 16 16"
+                        fill="currentColor"
+                        style={{
+                          transform: 'rotate(-90deg)',
+                          transition: 'transform 0.2s'
+                        }}
+                      >
+                        <path d="M4 6l4 4 4-4" stroke="currentColor" strokeWidth="2" fill="none"/>
+                      </svg>
+                    </button>
+                  </div>
+
+                  {/* Collapsed state - no content shown */}
+                  <div style={{ padding: '12px 24px', fontSize: '13px', color: 'var(--color-text-muted)', fontStyle: 'italic' }}>
+                    This group has been marked as reviewed and collapsed.
+                  </div>
+                </div>
               </div>
             </div>
             </div>
@@ -1968,17 +2150,17 @@ export default function PRDetailClient() {
         <>
           {/* Overlay */}
           <div
-            className="author-note-overlay"
-            onClick={() => setShowAuthorNote(false)}
+            className={`author-note-overlay ${isClosingAuthorNote ? 'closing' : ''}`}
+            onClick={handleCloseAuthorNote}
           />
 
           {/* Slide-in Panel */}
-          <div className="author-note-panel-slide">
+          <div className={`author-note-panel-slide ${isClosingAuthorNote ? 'closing' : ''}`}>
             <div className="author-note-panel-header">
               <h3 className="author-note-panel-title">Author's Note</h3>
               <button
                 className="author-note-close"
-                onClick={() => setShowAuthorNote(false)}
+                onClick={handleCloseAuthorNote}
                 title="Close"
               >
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -2039,6 +2221,40 @@ export default function PRDetailClient() {
                         <div className="progress-bar-fill" style={{ width: '0%' }}></div>
                       </div>
                       <span className="progress-percentage">0% Complete</span>
+                    </div>
+                  </div>
+
+                  {/* AI Question Section */}
+                  <div className="reviewer-note-section">
+                    <h4 className="reviewer-note-section-title">Ask AI about this PR</h4>
+                    <div className="ai-search-container">
+                      <input
+                        type="text"
+                        className="ai-search-input"
+                        placeholder="e.g., 'What security concerns should I look for?' or 'Explain the authentication flow'"
+                        value={aiQuestion}
+                        onChange={(e) => setAiQuestion(e.target.value)}
+                        onKeyDown={(e) => {
+                          if (e.key === 'Enter' && aiQuestion.trim()) {
+                            console.log('AI Question:', aiQuestion);
+                            // TODO: Send to AI API
+                          }
+                        }}
+                      />
+                      <button
+                        className="ai-search-button"
+                        onClick={() => {
+                          if (aiQuestion.trim()) {
+                            console.log('AI Question:', aiQuestion);
+                            // TODO: Send to AI API
+                          }
+                        }}
+                      >
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                          <circle cx="11" cy="11" r="8"/>
+                          <path d="m21 21-4.35-4.35"/>
+                        </svg>
+                      </button>
                     </div>
                   </div>
                 </>
@@ -2119,40 +2335,6 @@ export default function PRDetailClient() {
                   </div>
                 </div>
               )}
-
-              {/* AI Question Section */}
-              <div className="reviewer-note-section">
-                <h4 className="reviewer-note-section-title">Ask AI about this PR</h4>
-                <div className="ai-search-container">
-                  <input
-                    type="text"
-                    className="ai-search-input"
-                    placeholder="e.g., 'What security concerns should I look for?' or 'Explain the authentication flow'"
-                    value={aiQuestion}
-                    onChange={(e) => setAiQuestion(e.target.value)}
-                    onKeyDown={(e) => {
-                      if (e.key === 'Enter' && aiQuestion.trim()) {
-                        console.log('AI Question:', aiQuestion);
-                        // TODO: Send to AI API
-                      }
-                    }}
-                  />
-                  <button
-                    className="ai-search-button"
-                    onClick={() => {
-                      if (aiQuestion.trim()) {
-                        console.log('AI Question:', aiQuestion);
-                        // TODO: Send to AI API
-                      }
-                    }}
-                  >
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                      <circle cx="11" cy="11" r="8"/>
-                      <path d="m21 21-4.35-4.35"/>
-                    </svg>
-                  </button>
-                </div>
-              </div>
             </div>
           </div>
         </>
