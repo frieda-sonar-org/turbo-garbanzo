@@ -38,9 +38,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body
-        className={`${inter.variable} ${ubuntuMono.variable} antialiased`}
-      >
+      <body className="antialiased">
         {children}
       </body>
     </html>
