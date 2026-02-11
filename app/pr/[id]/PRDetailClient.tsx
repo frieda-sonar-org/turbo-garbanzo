@@ -14,7 +14,6 @@ export default function PRDetailClient() {
   const [showGroupFiles, setShowGroupFiles] = useState(false);
   const [showGroupFiles2, setShowGroupFiles2] = useState(false);
   const [showGroupFiles3, setShowGroupFiles3] = useState(false);
-  const [showGroupFiles4, setShowGroupFiles4] = useState(false);
   const [showFileChanges, setShowFileChanges] = useState(true);
   const [showFileChanges2, setShowFileChanges2] = useState(true);
   const [showFileChanges3, setShowFileChanges3] = useState(true);
@@ -45,10 +44,9 @@ export default function PRDetailClient() {
   const [groupReviewed1, setGroupReviewed1] = useState(false);
   const [groupReviewed2, setGroupReviewed2] = useState(false);
   const [groupReviewed3, setGroupReviewed3] = useState(false);
-  const [groupReviewed4, setGroupReviewed4] = useState(false);
 
   // Author's Note panel state
-  const [showAuthorNote, setShowAuthorNote] = useState(false);
+  const [showAuthorNote, setShowAuthorNote] = useState(true);
   const [isClosingAuthorNote, setIsClosingAuthorNote] = useState(false);
   const [authorNoteTab, setAuthorNoteTab] = useState('context'); // 'context' or 'conversation'
   const [aiQuestion, setAiQuestion] = useState('');
@@ -823,92 +821,6 @@ export default function PRDetailClient() {
                         fill="currentColor"
                         style={{
                           transform: showGroupFiles3 ? 'rotate(0deg)' : 'rotate(-90deg)',
-                          transition: 'transform 0.2s'
-                        }}
-                      >
-                        <path d="M4 6l4 4 4-4" stroke="currentColor" strokeWidth="2" fill="none"/>
-                      </svg>
-                    </button>
-                  </div>
-                </div>
-
-                {/* Group 4: Testing & Documentation */}
-                <div className="file-group">
-                  <div style={{ display: 'flex', alignItems: 'flex-start', width: '100%' }}>
-                    {groupReviewed4 ? (
-                      <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" style={{ marginRight: '8px', marginTop: '2px', flexShrink: 0, color: '#4CAF50' }}>
-                        <circle cx="8" cy="8" r="7" stroke="currentColor" strokeWidth="1.5" fill="none"/>
-                        <path d="M5 8l2 2 4-4" stroke="currentColor" strokeWidth="2" fill="none"/>
-                      </svg>
-                    ) : (
-                      <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" style={{ marginRight: '8px', marginTop: '2px', flexShrink: 0, color: 'var(--color-text-muted)' }}>
-                        <path d="M2 3h5l2 2h5v8H2V3z" stroke="currentColor" strokeWidth="1" fill="none"/>
-                      </svg>
-                    )}
-                    <div style={{ flex: 1, overflow: 'hidden' }}>
-                      <div
-                        className="file-group-name"
-                        style={{
-                          fontWeight: 500,
-                          marginBottom: showGroupFiles4 ? '8px' : '0',
-                          cursor: 'pointer',
-                          color: groupReviewed4 ? '#4CAF50' : 'inherit'
-                        }}
-                        onClick={() => {
-                          const element = document.getElementById('group-backend-api');
-                          if (element) {
-                            element.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                          }
-                        }}
-                      >
-                        Testing & Documentation
-                      </div>
-                      {showGroupFiles4 && (
-                        <div style={{ fontSize: '12px', color: 'var(--color-text-muted)', paddingLeft: '8px' }}>
-                          <div style={{
-                            marginBottom: '4px',
-                            overflow: 'hidden',
-                            textOverflow: 'ellipsis',
-                            whiteSpace: 'nowrap',
-                            direction: 'rtl',
-                            textAlign: 'left'
-                          }}>
-                            tests/api/users.test.ts
-                          </div>
-                          <div style={{
-                            marginBottom: '4px',
-                            overflow: 'hidden',
-                            textOverflow: 'ellipsis',
-                            whiteSpace: 'nowrap',
-                            direction: 'rtl',
-                            textAlign: 'left'
-                          }}>
-                            README.md
-                          </div>
-                          <div style={{
-                            overflow: 'hidden',
-                            textOverflow: 'ellipsis',
-                            whiteSpace: 'nowrap',
-                            direction: 'rtl',
-                            textAlign: 'left'
-                          }}>
-                            docs/API.md
-                          </div>
-                        </div>
-                      )}
-                    </div>
-                    <button
-                      className="file-group-toggle"
-                      onClick={() => setShowGroupFiles4(!showGroupFiles4)}
-                      style={{ marginLeft: '8px', flexShrink: 0, marginTop: '2px' }}
-                    >
-                      <svg
-                        width="16"
-                        height="16"
-                        viewBox="0 0 16 16"
-                        fill="currentColor"
-                        style={{
-                          transform: showGroupFiles4 ? 'rotate(0deg)' : 'rotate(-90deg)',
                           transition: 'transform 0.2s'
                         }}
                       >
@@ -2102,44 +2014,6 @@ export default function PRDetailClient() {
                     </>
                   )}
                 </div>
-
-                {/* Fourth File Change Card - Testing & Documentation */}
-                <div className="file-change-card">
-                  <div className="file-change-header" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '12px', flex: 1 }}>
-                      <h3 style={{ margin: 0 }}>Testing & Documentation</h3>
-                      <span className="reviewed-badge" style={{ backgroundColor: '#4CAF50', color: 'white', padding: '4px 8px', borderRadius: '4px', fontSize: '12px', fontWeight: 500 }}>Reviewed</span>
-                      <div className="file-change-meta" style={{ display: 'flex', alignItems: 'center', gap: '8px', marginLeft: 'auto' }}>
-                        <span className="file-count">3 files</span>
-                        <span className="additions">+312</span>
-                        <span className="deletions">-5</span>
-                      </div>
-                    </div>
-                    <button
-                      className="pin-button"
-                      onClick={() => setShowFileChanges(!showFileChanges)}
-                      style={{ marginLeft: '12px', display: 'none' }}
-                    >
-                      <svg
-                        width="16"
-                        height="16"
-                        viewBox="0 0 16 16"
-                        fill="currentColor"
-                        style={{
-                          transform: 'rotate(-90deg)',
-                          transition: 'transform 0.2s'
-                        }}
-                      >
-                        <path d="M4 6l4 4 4-4" stroke="currentColor" strokeWidth="2" fill="none"/>
-                      </svg>
-                    </button>
-                  </div>
-
-                  {/* Collapsed state - no content shown */}
-                  <div style={{ padding: '12px 24px', fontSize: '13px', color: 'var(--color-text-muted)', fontStyle: 'italic' }}>
-                    This group has been marked as reviewed and collapsed.
-                  </div>
-                </div>
               </div>
             </div>
             </div>
@@ -2178,7 +2052,7 @@ export default function PRDetailClient() {
                   className={`author-note-tab ${authorNoteTab === 'context' ? 'active' : ''}`}
                   onClick={() => setAuthorNoteTab('context')}
                 >
-                  Context
+                  Summary
                 </button>
                 <button
                   className={`author-note-tab ${authorNoteTab === 'conversation' ? 'active' : ''}`}
@@ -2193,10 +2067,10 @@ export default function PRDetailClient() {
                 <>
                   <div className="reviewer-note-section">
                     <p className="reviewer-note-text">
-                      This PR introduces a comprehensive user management system with REST API endpoints, JWT-based authentication, and database session handling. The implementation includes 4 main components: Backend API routes (users & auth), Database models & migrations, Authentication services with JWT utilities, and comprehensive test coverage with updated documentation.
+                      This PR introduces a comprehensive user management system with REST API endpoints, JWT-based authentication, and database session handling. The implementation includes 3 main components: Backend API routes (users & auth), Database models & migrations, and Authentication services with JWT utilities.
                     </p>
                     <p className="reviewer-note-text" style={{ marginTop: '8px' }}>
-                      <strong>Key Changes:</strong> Added 15 new files across backend infrastructure, implementing CRUD operations for user management, secure authentication flow with token refresh, SQL migration for session storage, and middleware for request validation and authorization.
+                      <strong>Key Changes:</strong> Added 10 new files across backend infrastructure, implementing CRUD operations for user management, secure authentication flow with token refresh, SQL migration for session storage, and middleware for request validation and authorization.
                     </p>
                   </div>
 
@@ -2206,15 +2080,15 @@ export default function PRDetailClient() {
                     <div className="pr-progress-stats">
                       <div className="progress-stat">
                         <span className="progress-label">Files Reviewed</span>
-                        <span className="progress-value">0 / 15</span>
+                        <span className="progress-value">0 / 10</span>
                       </div>
                       <div className="progress-stat">
                         <span className="progress-label">Groups Completed</span>
-                        <span className="progress-value">0 / 4</span>
+                        <span className="progress-value">0 / 3</span>
                       </div>
                       <div className="progress-stat">
                         <span className="progress-label">Est. Time Left</span>
-                        <span className="progress-value">~45 min</span>
+                        <span className="progress-value">~30 min</span>
                       </div>
                     </div>
                     <div className="progress-bar-container">

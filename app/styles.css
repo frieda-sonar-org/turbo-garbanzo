@@ -2147,7 +2147,7 @@ body {
     bottom: 0;
     width: 500px;
     max-width: 90vw;
-    background-color: var(--color-bg-secondary);
+    background-color: var(--color-sidebar-bg);
     border-left: 1px solid var(--color-border-primary);
     z-index: 1001;
     display: flex;
@@ -2238,12 +2238,12 @@ body {
     color: var(--color-text-tertiary);
     background: transparent;
     border: none;
-    padding: 10px 16px;
+    padding: 12px 16px;
     cursor: pointer;
     border-bottom: 2px solid transparent;
     transition: all 0.2s ease;
-    font-size: 13px;
-    font-weight: 500;
+    font-size: 14px;
+    font-weight: 600;
 }
 
 .author-note-tab:hover {
@@ -2304,11 +2304,16 @@ body {
 /* Reviewer Note Section */
 .reviewer-note-section {
     padding: 0;
+    margin-top: 24px;
+}
+
+.reviewer-note-section:first-of-type {
+    margin-top: 0;
 }
 
 .reviewer-note-section-title {
     font: var(--echoes-typography-text-default-semibold);
-    font-size: 14px;
+    font-size: 15px;
     font-weight: 600;
     color: var(--color-text-primary);
     margin: 0 0 12px 0;
@@ -2316,7 +2321,7 @@ body {
 
 .reviewer-note-text {
     font: var(--echoes-typography-text-default);
-    font-size: 13px;
+    font-size: 14px;
     line-height: 1.6;
     color: var(--color-text-secondary);
     margin: 0;
@@ -2342,13 +2347,13 @@ body {
 
 .progress-label {
     font: var(--echoes-typography-text-small);
-    font-size: 12px;
+    font-size: 13px;
     color: var(--color-text-muted);
 }
 
 .progress-value {
     font: var(--echoes-typography-text-default-semibold);
-    font-size: 16px;
+    font-size: 18px;
     font-weight: 600;
     color: var(--color-text-primary);
 }
@@ -2376,7 +2381,7 @@ body {
 
 .progress-percentage {
     font: var(--echoes-typography-text-small-semibold);
-    font-size: 12px;
+    font-size: 13px;
     font-weight: 600;
     color: var(--color-text-secondary);
     white-space: nowrap;
@@ -2398,7 +2403,7 @@ body {
     padding: 10px 12px;
     padding-right: 44px;
     font: var(--echoes-typography-text-default);
-    font-size: 13px;
+    font-size: 14px;
     color: var(--color-text-primary);
     outline: none;
     transition: all var(--transition-base);
