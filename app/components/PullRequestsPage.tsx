@@ -196,6 +196,7 @@ export default function PullRequestsPage() {
                 <path d="M4 2l4 4-4 4V2zM8 6l4 4-4 4V6z"/>
               </svg>
               Pull Requests
+              <span className="badge-beta">Beta</span>
               <span className="count-badge">10</span>
             </a>
             <a href="#" className="sidebar-link">

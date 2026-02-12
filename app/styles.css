@@ -339,11 +339,30 @@ body {
     color: var(--color-text-primary);
 }
 
-/* Page header title section - replaces pr-title-section */
-.page-header-title-section {
+/* Page header content - two-column layout */
+.page-header-content {
     display: flex;
-    align-items: center;
     justify-content: space-between;
+    align-items: flex-start;
+    gap: 24px;
+    margin-top: 12px;
+}
+
+/* Left column: Title + dropdown, and metadata below */
+.page-header-left {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    flex: 1;
+    min-width: 0;
+}
+
+/* Right column: Call-to-action buttons */
+.page-header-actions {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    flex-shrink: 0;
 }
 
 /* Centralized H1 styling for consistent typography */
@@ -566,13 +585,26 @@ body {
     background: transparent;
 }
 
-.sidebar::-webkit-scrollbar-thumb,
+/* Sidebar scrollbar - hidden by default, visible on hover */
+.sidebar::-webkit-scrollbar-thumb {
+    background: transparent;
+    border-radius: 4px;
+}
+
+.sidebar:hover::-webkit-scrollbar-thumb {
+    background: var(--color-border-primary);
+}
+
+.sidebar::-webkit-scrollbar-thumb:hover {
+    background: var(--color-border-focus);
+}
+
+/* Main content scrollbar - always visible */
 .main-content::-webkit-scrollbar-thumb {
     background: var(--color-border-primary);
     border-radius: 4px;
 }
 
-.sidebar::-webkit-scrollbar-thumb:hover,
 .main-content::-webkit-scrollbar-thumb:hover {
     background: var(--color-border-focus);
 }
@@ -684,7 +716,7 @@ body {
     font-weight: var(--echoes-font-weight-semibold); /* 600 */
     line-height: var(--echoes-line-height-200);
     color: var(--color-text-primary);
-    margin: 8px 0 0 0;
+    margin: 0;
     display: flex;
     align-items: center;
     gap: 8px;
@@ -696,6 +728,118 @@ body {
     font-size: var(--echoes-font-size-125); /* 20px */
     font-weight: var(--echoes-font-weight-semibold); /* 600 */
     line-height: var(--echoes-line-height-175);
+}
+
+/* PR Selector Dropdown */
+.pr-selector-container {
+    position: relative;
+    display: inline-block;
+}
+
+.pr-selector-button {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background-color: transparent;
+    border: 1px solid var(--color-border-primary);
+    border-radius: 6px;
+    padding: 10px 16px;
+    color: var(--color-text-primary);
+    font-family: var(--echoes-font-family-sans);
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    width: 25rem;
+}
+
+.pr-selector-button:hover {
+    background-color: transparent;
+    border-color: var(--color-accent-primary);
+}
+
+.pr-selector-text {
+    flex: 1;
+    text-align: left;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    min-width: 0;
+}
+
+.pr-selector-dropdown {
+    position: absolute;
+    top: calc(100% + 4px);
+    left: 0;
+    width: 25rem;
+    background-color: var(--color-bg-secondary);
+    border: 1px solid var(--color-border-primary);
+    border-radius: 6px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+    z-index: 1000;
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+.pr-selector-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 16px;
+    cursor: pointer;
+    border-bottom: 1px solid var(--color-border-secondary);
+    transition: background-color 0.2s ease;
+    gap: 16px;
+}
+
+.pr-selector-item:last-child {
+    border-bottom: none;
+}
+
+.pr-selector-item:hover {
+    background-color: var(--color-bg-primary);
+}
+
+.pr-selector-item.active {
+    background-color: rgba(159, 169, 237, 0.1);
+    border-left: 3px solid var(--color-accent-primary);
+}
+
+.pr-selector-item-content {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex: 1;
+    min-width: 0;
+}
+
+.pr-selector-item-text {
+    color: var(--color-text-primary);
+    font-family: var(--echoes-font-family-sans);
+    font-size: 14px;
+    line-height: 1.5;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    flex: 1;
+    min-width: 0;
+}
+
+.pr-selector-item-status {
+    color: var(--color-text-primary);
+    font-family: var(--echoes-font-family-sans);
+    font-size: 14px;
+    font-weight: 500;
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+.pr-selector-item-status.passed {
+    color: var(--color-success);
+}
+
+.pr-selector-item-status.failed {
+    color: var(--color-error);
 }
 
 .pr-section {

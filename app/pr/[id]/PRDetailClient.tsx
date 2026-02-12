@@ -46,10 +46,21 @@ export default function PRDetailClient() {
   const [groupReviewed3, setGroupReviewed3] = useState(false);
 
   // Author's Note panel state
-  const [showAuthorNote, setShowAuthorNote] = useState(true);
+  const [showAuthorNote, setShowAuthorNote] = useState(false);
   const [isClosingAuthorNote, setIsClosingAuthorNote] = useState(false);
   const [authorNoteTab, setAuthorNoteTab] = useState('context'); // 'context' or 'conversation'
   const [aiQuestion, setAiQuestion] = useState('');
+
+  // PR Selector dropdown state
+  const [showPRSelector, setShowPRSelector] = useState(false);
+
+  // Open Author's Note panel on page load with slide-in animation
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShowAuthorNote(true);
+    }, 100);
+    return () => clearTimeout(timer);
+  }, []);
 
   const handleLineClick = (lineId: string) => {
     setActiveCommentLine(lineId);
@@ -79,6 +90,24 @@ export default function PRDetailClient() {
       setIsClosingAuthorNote(false);
     }, 300); // Match animation duration
   };
+
+  // Click outside handler to close PR selector dropdown
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      const target = event.target as HTMLElement;
+      if (showPRSelector && !target.closest('.pr-selector-container')) {
+        setShowPRSelector(false);
+      }
+    };
+
+    if (showPRSelector) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [showPRSelector]);
 
   // Click outside handler to cancel comment input
   useEffect(() => {
@@ -266,6 +295,7 @@ export default function PRDetailClient() {
                 <path d="M4 2l4 4-4 4V2zM8 6l4 4-4 4V6z"/>
               </svg>
               Review
+              <span className="badge-beta">Beta</span>
             </a>
             <a href="#" className="sidebar-link">
               <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
@@ -368,23 +398,105 @@ export default function PRDetailClient() {
         <main className="main-content">
           {/* Page Header - unified breadcrumb and title section */}
           <div className="page-header">
-            {/* Breadcrumb */}
+            {/* Breadcrumb - 1st line */}
             <div className="breadcrumb">
               <a href="#" className="breadcrumb-link">SonarSource</a>
               <span className="breadcrumb-separator">/</span>
               <a href="#" className="breadcrumb-link">asast-scanner-pipeline</a>
               <span className="breadcrumb-separator">/</span>
-              <Link href="/" className="breadcrumb-link">Pull Requests</Link>
-              <span className="breadcrumb-separator">/</span>
-              <span className="breadcrumb-current">{prData.number} - {prData.title}</span>
+              <span className="breadcrumb-current">Pull Request Review</span>
             </div>
 
-            {/* Title section with Review Button */}
-            <div className="page-header-title-section">
-              <div>
-                <h1 className="pr-detail-title">
-                  {prData.number} - {prData.title} <span className="pr-version">#{prData.version}</span>
-                </h1>
+            {/* Two-column layout: Left (title/metadata) and Right (call-to-actions) */}
+            <div className="page-header-content">
+              {/* Left column: Title + Dropdown, then Metadata */}
+              <div className="page-header-left">
+                <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+                  <h1 className="pr-detail-title">Pull Request Review</h1>
+
+                  {/* PR Selector Dropdown */}
+                  <div className="pr-selector-container" style={{ position: 'relative' }}>
+                  <button
+                    className="pr-selector-button"
+                    onClick={() => setShowPRSelector(!showPRSelector)}
+                  >
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" style={{ flexShrink: 0 }}>
+                      <path d="M7.177 3.073L9.573.677A.25.25 0 0110 .854v4.792a.25.25 0 01-.427.177L7.177 3.427a.25.25 0 010-.354zM3.75 2.5a.75.75 0 100 1.5.75.75 0 000-1.5zm-2.25.75a2.25 2.25 0 113 2.122v5.256a2.251 2.251 0 11-1.5 0V5.372A2.25 2.25 0 011.5 3.25zM11 2.5h-1V4h1a1 1 0 011 1v5.628a2.251 2.251 0 101.5 0V5A2.5 2.5 0 0011 2.5zm1 10.25a.75.75 0 111.5 0 .75.75 0 01-1.5 0zM3.75 12a.75.75 0 100 1.5.75.75 0 000-1.5z"/>
+                    </svg>
+                    <span className="pr-selector-text">
+                      {prData.number} – {prData.title}
+                    </span>
+                    <svg width="12" height="12" viewBox="0 0 12 12" fill="currentColor" style={{ marginLeft: 'auto', flexShrink: 0 }}>
+                      <path d="M6 8L2 4h8L6 8z"/>
+                    </svg>
+                  </button>
+
+                  {/* PR Selector Dropdown Menu */}
+                  {showPRSelector && (
+                    <div className="pr-selector-dropdown">
+                      <div className="pr-selector-item active">
+                        <div className="pr-selector-item-content">
+                          <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" style={{ flexShrink: 0 }}>
+                            <path d="M7.177 3.073L9.573.677A.25.25 0 0110 .854v4.792a.25.25 0 01-.427.177L7.177 3.427a.25.25 0 010-.354zM3.75 2.5a.75.75 0 100 1.5.75.75 0 000-1.5zm-2.25.75a2.25 2.25 0 113 2.122v5.256a2.251 2.251 0 11-1.5 0V5.372A2.25 2.25 0 011.5 3.25zM11 2.5h-1V4h1a1 1 0 011 1v5.628a2.251 2.251 0 101.5 0V5A2.5 2.5 0 0011 2.5zm1 10.25a.75.75 0 111.5 0 .75.75 0 01-1.5 0zM3.75 12a.75.75 0 100 1.5.75.75 0 000-1.5z"/>
+                          </svg>
+                          <span className="pr-selector-item-text">35 – Add user management API with authentication & session handling</span>
+                        </div>
+                        <span className="pr-selector-item-status passed">Passed</span>
+                      </div>
+                      <div className="pr-selector-item" onClick={() => {
+                        setShowPRSelector(false);
+                        window.location.href = `${basePath}/pr/34`;
+                      }}>
+                        <div className="pr-selector-item-content">
+                          <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" style={{ flexShrink: 0 }}>
+                            <path d="M7.177 3.073L9.573.677A.25.25 0 0110 .854v4.792a.25.25 0 01-.427.177L7.177 3.427a.25.25 0 010-.354zM3.75 2.5a.75.75 0 100 1.5.75.75 0 000-1.5zm-2.25.75a2.25 2.25 0 113 2.122v5.256a2.251 2.251 0 11-1.5 0V5.372A2.25 2.25 0 011.5 3.25zM11 2.5h-1V4h1a1 1 0 011 1v5.628a2.251 2.251 0 101.5 0V5A2.5 2.5 0 0011 2.5zm1 10.25a.75.75 0 111.5 0 .75.75 0 01-1.5 0zM3.75 12a.75.75 0 100 1.5.75.75 0 000-1.5z"/>
+                          </svg>
+                          <span className="pr-selector-item-text">34 – ASASTSCAN-223 License header of asast-scanner-pipeline should b...</span>
+                        </div>
+                        <span className="pr-selector-item-status passed">Passed</span>
+                      </div>
+                      <div className="pr-selector-item" onClick={() => {
+                        setShowPRSelector(false);
+                        window.location.href = `${basePath}/pr/33`;
+                      }}>
+                        <div className="pr-selector-item-content">
+                          <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" style={{ flexShrink: 0 }}>
+                            <path d="M7.177 3.073L9.573.677A.25.25 0 0110 .854v4.792a.25.25 0 01-.427.177L7.177 3.427a.25.25 0 010-.354zM3.75 2.5a.75.75 0 100 1.5.75.75 0 000-1.5zm-2.25.75a2.25 2.25 0 113 2.122v5.256a2.251 2.251 0 11-1.5 0V5.372A2.25 2.25 0 011.5 3.25zM11 2.5h-1V4h1a1 1 0 011 1v5.628a2.251 2.251 0 101.5 0V5A2.5 2.5 0 0011 2.5zm1 10.25a.75.75 0 111.5 0 .75.75 0 01-1.5 0zM3.75 12a.75.75 0 100 1.5.75.75 0 000-1.5z"/>
+                          </svg>
+                          <span className="pr-selector-item-text">33 – ASASTSCAN-220 Increase memory available during generation</span>
+                        </div>
+                        <span className="pr-selector-item-status passed">Passed</span>
+                      </div>
+                      <div className="pr-selector-item" onClick={() => {
+                        setShowPRSelector(false);
+                        window.location.href = `${basePath}/pr/32`;
+                      }}>
+                        <div className="pr-selector-item-content">
+                          <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" style={{ flexShrink: 0 }}>
+                            <path d="M7.177 3.073L9.573.677A.25.25 0 0110 .854v4.792a.25.25 0 01-.427.177L7.177 3.427a.25.25 0 010-.354zM3.75 2.5a.75.75 0 100 1.5.75.75 0 000-1.5zm-2.25.75a2.25 2.25 0 113 2.122v5.256a2.251 2.251 0 11-1.5 0V5.372A2.25 2.25 0 011.5 3.25zM11 2.5h-1V4h1a1 1 0 011 1v5.628a2.251 2.251 0 101.5 0V5A2.5 2.5 0 0011 2.5zm1 10.25a.75.75 0 111.5 0 .75.75 0 01-1.5 0zM3.75 12a.75.75 0 100 1.5.75.75 0 000-1.5z"/>
+                          </svg>
+                          <span className="pr-selector-item-text">32 – ASASTSCAN-219 Fix ASAST pipeline regarding repox access</span>
+                        </div>
+                        <span className="pr-selector-item-status passed">Passed</span>
+                      </div>
+                      <div className="pr-selector-item" onClick={() => {
+                        setShowPRSelector(false);
+                        window.location.href = `${basePath}/pr/31`;
+                      }}>
+                        <div className="pr-selector-item-content">
+                          <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" style={{ flexShrink: 0 }}>
+                            <path d="M7.177 3.073L9.573.677A.25.25 0 0110 .854v4.792a.25.25 0 01-.427.177L7.177 3.427a.25.25 0 010-.354zM3.75 2.5a.75.75 0 100 1.5.75.75 0 000-1.5zm-2.25.75a2.25 2.25 0 113 2.122v5.256a2.251 2.251 0 11-1.5 0V5.372A2.25 2.25 0 011.5 3.25zM11 2.5h-1V4h1a1 1 0 011 1v5.628a2.251 2.251 0 101.5 0V5A2.5 2.5 0 0011 2.5zm1 10.25a.75.75 0 111.5 0 .75.75 0 01-1.5 0zM3.75 12a.75.75 0 100 1.5.75.75 0 000-1.5z"/>
+                          </svg>
+                          <span className="pr-selector-item-text">31 – ASASTSCAN-218 Exclude rule S6639 from generation</span>
+                        </div>
+                        <span className="pr-selector-item-status passed">Passed</span>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </div>
+
+                {/* Page metadata on second line */}
                 <div className="page-metadata">
                   <span className="metadata-item">Private</span>
                   <span className="metadata-separator"></span>
@@ -409,7 +521,9 @@ export default function PRDetailClient() {
                   </div> */}
                 </div>
               </div>
-              <div style={{ display: 'flex', gap: '8px', alignItems: 'center', position: 'relative' }}>
+
+              {/* Right column: Call-to-actions (buttons) */}
+              <div className="page-header-actions">
                 {/* Review changes Button */}
                 <button className="btn-review-changes" onClick={() => setShowReviewModal(!showReviewModal)}>
                   Review changes
@@ -513,9 +627,12 @@ export default function PRDetailClient() {
                   </div>
                 </div>
               )}
+              </div>
+              {/* End page-header-actions */}
             </div>
+            {/* End page-header-content */}
           </div>
-          </div>
+          {/* End page-header */}
 
           <div className="files-tab-container">
               {/* Quality Gate Summary - Full Width at Top */}
