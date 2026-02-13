@@ -196,7 +196,6 @@ export default function PullRequestsPage() {
                 <path d="M4 2l4 4-4 4V2zM8 6l4 4-4 4V6z"/>
               </svg>
               Pull Requests
-              <span className="badge-beta">Beta</span>
               <span className="count-badge">10</span>
             </a>
             <a href="#" className="sidebar-link">
@@ -253,7 +252,7 @@ export default function PullRequestsPage() {
           {/* Pull Requests List */}
           <div className="pr-list">
             {[
-              { id: '35', title: '35 - Add user management API with authentication & session handling', date: '2 hours ago', commit: 'b4c8e2f', icon: 'square' },
+              { id: '35', title: '35 - Implement GitHub PR review comments API integration', date: '2 hours ago', commit: 'b4c8e2f', icon: 'square' },
               { id: '34', title: '34 - ASASTSCAN-223 License header of asast-scanner-pipeline should b...', date: '2 days ago', commit: 'ca09b179', icon: 'square' },
               { id: '33', title: '33 - ASASTSCAN-220 Increase memory available during generation', date: '3 days ago', commit: 'e99ee76e', icon: 'square' },
               { id: '31', title: '31 - ASASTSCAN-218 Exclude rule S6639 from generation', date: '1 month ago', commit: '1c98ce11', icon: 'square' },

@@ -1399,6 +1399,12 @@ body {
     font-size: var(--echoes-font-size-87); /* 14px */
     font-weight: var(--echoes-font-weight-regular); /* 400 */
     line-height: var(--echoes-line-height-125);
+    max-width: 50ch; /* Limit width to prevent horizontal scroll, showing ~50 characters */
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    direction: rtl; /* Right-to-left text direction */
+    text-align: left; /* Align to left, causing ellipsis at the beginning */
 }
 
 .copy-button {
